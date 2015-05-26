@@ -11,14 +11,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
 import rs.fon.is.dodatna.komunikacija.JsonRatesAPIKomunikacija;
 import rs.fon.is.dodatna.valute.Valuta;
 
 public class AzuriranjeKursneListe {
 	private static final String putanjaDoFajlaKursnaLista = "data/kursnaLista.json";
 	
-	private LinkedList<Valuta> ucitajValute(){
+	public LinkedList<Valuta> ucitajValute(){
 		LinkedList<Valuta> kursnaLista = new LinkedList<Valuta>();
 		try {
 			FileReader in = new FileReader(putanjaDoFajlaKursnaLista);
@@ -32,7 +31,8 @@ public class AzuriranjeKursneListe {
 				kursnaLista.add(v);	
 			}
 			in.close();
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -40,7 +40,7 @@ public class AzuriranjeKursneListe {
 		return kursnaLista;
 	}
 	
-	private void upisiValute(LinkedList<Valuta> kursnaLista, GregorianCalendar datum){
+	public void upisiValute(LinkedList<Valuta> kursnaLista, GregorianCalendar datum){
 		try {
 			JsonArray nizKursevaJson = new JsonArray();
 			JsonObject objekatJson = new JsonObject();
@@ -52,10 +52,9 @@ public class AzuriranjeKursneListe {
 					nizKursevaJson.add(valutaJson);
 				}
 				objekatJson.add("valute", nizKursevaJson);
-				PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/kursnaLista.json")));
+				PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(putanjaDoFajlaKursnaLista)));
 				Gson gson = new GsonBuilder().setPrettyPrinting().create();
-				String toJSON = gson.toJson(objekatJson);
-				out.println(toJSON);
+				out.println(gson.toJson(objekatJson));
 				out.close();
 			
 		}
